@@ -1,0 +1,115 @@
+<?xml version="1.0" encoding="utf-8"?>
+<UserControl
+    x:Class="Notes.Controls.AttachmentView"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:local="using:Notes.Controls"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" xmlns:models="using:Notes.Models"
+    mc:Ignorable="d">
+
+    <Grid x:Name="Root" Background="#99000000" Padding="20, 60" Tapped="BackgroundTapped">
+        <Grid x:Name="ImageGrid"
+              HorizontalAlignment="Stretch"
+              VerticalAlignment="Stretch"
+              MaxWidth="1200"
+              Background="#efefef"
+              CornerRadius="8">
+            <Viewbox Stretch="Uniform" StretchDirection="Both" Margin="25">
+                <Grid>
+                    <Image x:Name="AttachmentImage" />
+                    <Canvas x:Name="AttachmentImageTextCanvas" />
+                </Grid>
+            </Viewbox>
+            
+        </Grid>
+        <Grid x:Name="MediaGrid"
+              HorizontalAlignment="Stretch"
+              VerticalAlignment="Stretch"
+              MaxWidth="1200"
+              Background="#efefef"
+              CornerRadius="8">
+
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="2*"/>
+                <ColumnDefinition Width="*"/>
+            </Grid.ColumnDefinitions>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="40"/>
+                <RowDefinition Height="*"/>
+                <RowDefinition Height="50"/>
+            </Grid.RowDefinitions>
+
+            <Image x:Name="WaveformImage"
+                   Grid.Column="0"
+                   Grid.RowSpan="3"
+                   HorizontalAlignment="Center"
+                   VerticalAlignment="Center"
+                   Stretch="UniformToFill"/>
+            
+            <MediaPlayerElement x:Name="mediaPlayer"
+                                VerticalAlignment="Bottom"
+                                HorizontalAlignment="Stretch"
+                                AreTransportControlsEnabled="True"
+                                Grid.Column="0"
+                                Grid.RowSpan="3"/>
+            
+            <StackPanel Grid.Column="1"
+                        Grid.Row="0"
+                        VerticalAlignment="Stretch"
+                        HorizontalAlignment="Stretch"
+                        Background="{ThemeResource CardBackgroundFillColorDefaultBrush}">
+                <TextBlock FontSize="18" 
+                           VerticalAlignment="Center"
+                           HorizontalAlignment="Center"
+                           Text="Transcription"
+                           Margin="10"/>
+            </StackPanel>
+            <ListView x:Name="transcriptBlocksListView"
+                      ItemsSource="{x:Bind TranscriptionBlocks, Mode=OneWay}"
+                      Background="{ThemeResource CardBackgroundFillColorDefaultBrush}"
+                      Grid.Column="1"
+                      Grid.Row="1"
+                      Padding="5"
+                      SelectionChanged="TranscriptBlocksListView_SelectionChanged">
+                <ListView.ItemTemplate>
+                    <DataTemplate x:DataType="models:TranscriptionBlock">
+                        <StackPanel Margin="3">
+                            <TextBlock Text="{x:Bind StartDisplayText}"
+                                       FontWeight="Bold"
+                                       FontSize="10"/>
+                            <TextBlock Text="{x:Bind Text}"
+                                       TextWrapping="Wrap"/>
+                        </StackPanel>
+
+                    </DataTemplate>
+                </ListView.ItemTemplate>
+            </ListView>
+
+            <ProgressRing x:Name="transcriptLoadingProgressRing"
+                          Grid.Column="1"
+                          Grid.Row="1"
+                          IsActive="False"
+                          VerticalAlignment="Center"
+                          HorizontalAlignment="Center"/>
+
+            <StackPanel Grid.Column="1"
+                        Grid.Row="2"
+                        VerticalAlignment="Stretch"
+                        HorizontalAlignment="Stretch"
+                        Background="{ThemeResource CardBackgroundFillColorDefaultBrush}">
+                <ToggleSwitch x:Name="scrollEnableToggle"
+                              HorizontalAlignment="Center" 
+                              VerticalAlignment="Center"
+                              Margin="10"
+                              FontSize="10"
+                              OnContent="Auto-Scroll Enabled"
+                              OffContent="Auto-Scroll Disabled"
+                              IsOn="{x:Bind AutoScrollEnabled, Mode=TwoWay}"/>
+
+            </StackPanel>
+
+
+        </Grid>
+    </Grid>
+</UserControl>
