@@ -56,7 +56,7 @@ pip install onnxruntime_extensions
 
 3. Prepare the Whisper model
 ```
-python prepare_whisper_configs.py --model-name=openai/whisper-small --multilingual --enable_timestamps 
+python prepare_whisper_configs.py --model_name openai/whisper-small --multilingual --enable_timestamps 
 ```
 
 4. Run the Olive workflow to generate the optimized model
