@@ -25,7 +25,7 @@ Phi-3-mini-4k-instruct-onnx has 3 different versions inside it's repo. We are us
 The model can be downloaded from the following link:
 - https://huggingface.co/optimum/all-MiniLM-L6-v2
 
-This is model we use for semantic search. The two files you will need are `all-MiniLM-L6-v2.onnx` and `vocab.txt`. Create a new folder under `onnx-models` called `embedding` and place the files there.
+This is model we use for semantic search. The two files you will need are `model.onnx` and `vocab.txt`. Create a new folder under `onnx-models` called `embedding` and place the files there. Rename `model.onnx` to `all-MiniLM-L6-v2.onnx`.
 
 ## Downloading Sliero VAD
 The Sliero Voice Activity Detection model can be downloaded from the following link:
