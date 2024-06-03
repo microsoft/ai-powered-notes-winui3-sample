@@ -69,6 +69,11 @@ olive run --config whisper_cpu_int8.json
 
 6. Rename the model from `whisper_cpu_int8_cpu-cpu_model.onnx` to `whisper_small.onnx` and place it in the `onnx-models/whisper` folder.
 
+## Troubleshooting
+
+### Path name too long
+You might run into an issue if you clone the repo in a location that will make the path too long to some of the generated binaries. Recomendation is to place the repo closer to the root of the drive and rename the repo folder name to something shorter. Alternatively, you can change the settings in Windows to support long paths
+https://learn.microsoft.com/en-us/windows/win32/fileio/maximum-file-path-limitation?tabs=registry#enable-long-paths-in-windows-10-version-1607-and-later .
 
 ## Contributing
 
