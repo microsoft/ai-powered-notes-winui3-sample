@@ -2,6 +2,10 @@
 
 This sample is a simple note taking app that uses local APIs and models to provide AI powered features. The app is built using WinUI3.
 
+![image](https://github.com/microsoft/ai-powered-notes-winui3-sample/assets/711864/19839b9a-34fe-4330-94d4-d4e0baf6c94d)
+
+Watch the Build session: [Use AI for "Real Things" in your Windows apps](https://www.youtube.com/watch?v=st7aIx8B4Rk)
+
 ## Set Up
 
 You will need to have Visual Studio installed with the latest workloads for WinAppSDK and WinUI 3 development. You can find instructions on how to set up your environment [here.](https://learn.microsoft.com/en-us/windows/apps/windows-app-sdk/set-up-your-development-environment?tabs=cs-vs-community%2Ccpp-vs-community%2Cvs-2022-17-1-a%2Cvs-2022-17-1-b#install-visual-studio)
