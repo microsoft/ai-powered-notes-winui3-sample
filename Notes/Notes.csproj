@@ -50,6 +50,7 @@
     <PackageReference Include="NAudio.WaveFormRenderer" Version="2.0.0" />
     <PackageReference Include="NReco.VideoConverter" Version="1.2.1" />
     <PackageReference Include="SharpDX.DXGI" Version="4.2.0" />
+    <PackageReference Include="System.Numerics.Tensors" Version="9.0.0-preview.5.24306.7" />
     <Manifest Include="$(ApplicationManifest)" />
   </ItemGroup>
 
