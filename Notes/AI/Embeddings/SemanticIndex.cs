@@ -5,6 +5,7 @@ using System;
 using System.Linq;
 using Notes.ViewModels;
 using System.Text.RegularExpressions;
+using System.Numerics.Tensors;
 
 namespace Notes.AI.Embeddings
 {
@@ -37,7 +38,7 @@ namespace Notes.AI.Embeddings
 
             for (int i = 0; i < vectors.Count; i++)
             {
-                var score = GetCosineSimilarity(vectors[i], searchVector);
+                var score = TensorPrimitives.CosineSimilarity(vectors[i], searchVector);
                 scores[i] = (float)score;
             }
 
@@ -52,26 +53,6 @@ namespace Notes.AI.Embeddings
 
             return indexranks;
         }
-
-        public static double GetCosineSimilarity(float[] v1, float[] v2)
-        {
-            if (v1.Length != v2.Length)
-            {
-                throw new ArgumentException("Vectors must have the same length.");
-            }
-
-            double dot = 0.0d;
-            double mag1 = 0.0d;
-            double mag2 = 0.0d;
-            for (int n = 0; n < v1.Length; n++)
-            {
-                dot += v1[n] * v2[n];
-                mag1 += Math.Pow(v1[n], 2);
-                mag2 += Math.Pow(v2[n], 2);
-            }
-            return dot / (Math.Sqrt(mag1) * Math.Sqrt(mag2));
-        }
-
 
         private List<string> SplitParagraphInChunks(string paragraph, int maxLength)
         {
