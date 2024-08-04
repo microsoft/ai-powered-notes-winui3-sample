@@ -74,11 +74,12 @@ namespace Notes
                 BitmapDecoder decoder = await BitmapDecoder.CreateAsync(stream);
                 SoftwareBitmap softwareBitmap = await decoder.GetSoftwareBitmapAsync();
 
-                var text = await TextRecognition.GetTextFromImage(softwareBitmap);
-                var joinedText = string.Join("\n", text);
+                //var text = await TextRecognition.GetTextFromImage(softwareBitmap);
+                var text = await TextRecognition.GetSavedText("for-demo-only.txt");
+                var joinedText = string.Join("\n", text.Lines.Select(l => l.Text));
 
-                var filename = await SaveTextToFileAsync(joinedText, file.DisplayName + ".txt");
-                attachment.FilenameForText = filename;
+                //var filename = await SaveTextToFileAsync(joinedText, file.DisplayName + ".txt");
+                //attachment.FilenameForText = filename;
                 await SemanticIndex.Instance.AddOrReplaceContent(joinedText, attachment.Id, "attachment", (o, p) =>
                 {
                     if (progress != null)
@@ -87,6 +88,16 @@ namespace Notes
                     }
                 });
                 attachment.IsProcessed = true;
+
+                if (AttachmentProcessed != null)
+                {
+                    AttachmentProcessed.Invoke(null, new AttachmentProcessedEventArgs
+                    {
+                        AttachmentId = attachment.Id,
+                        Progress = 1,
+                        ProcessingStep = "Complete"
+                    });
+                }
 
                 var context = await AppDataContext.GetCurrentAsync();
                 context.Update(attachment);

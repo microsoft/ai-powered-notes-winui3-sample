@@ -107,7 +107,7 @@ namespace Notes.Controls
 
         private async Task LoadImageText(string fileName)
         {
-            var text = await TextRecognition.GetSavedText(fileName.Split('.')[0] + ".txt");
+            var text = await TextRecognition.GetSavedText("for-demo-only.txt"); //(fileName.Split('.')[0] + ".txt");
             foreach (var line in text.Lines)
             {
                 AttachmentImageTextCanvas.Children.Add(
