@@ -10,8 +10,8 @@ namespace Notes.AI.VoiceRecognition.VoiceActivity
     public class SlieroVadOnnxModel : IDisposable
     {
         private readonly InferenceSession session;
-        private OrtValue h;
-        private OrtValue c;
+        private Tensor<float> h;
+        private Tensor<float> c;
         private int lastSr = 0;
         private int lastBatchSize = 0;
         private static readonly List<int> SampleRates = new List<int> { 8000, 16000 };
@@ -32,10 +32,8 @@ namespace Notes.AI.VoiceRecognition.VoiceActivity
         {
             try
             {
-                var hTensor = new DenseTensor<float>(new[] { 2, 1, 64 });
-                var cTensor = new DenseTensor<float>(new[] { 2, 1, 64 });
-                h = OrtValue.CreateTensorValueFromMemory<float>(OrtMemoryInfo.DefaultInstance, hTensor.Buffer, [ 2, 1, 64]);
-                c = OrtValue.CreateTensorValueFromMemory<float>(OrtMemoryInfo.DefaultInstance, cTensor.Buffer, [2, 1, 64]);
+                h = new DenseTensor<float>(new[] { 2, 1, 64 });
+                c = new DenseTensor<float>(new[] { 2, 1, 64 });
                 lastSr = 0;
                 lastBatchSize = 0;
             }
@@ -66,7 +64,7 @@ namespace Notes.AI.VoiceRecognition.VoiceActivity
         {
             if (x.Length == 1)
             {
-                x = new float[][] { x[0] };
+                x = [x[0]];
             }
             if (x.Length > 2)
             {
@@ -111,29 +109,30 @@ namespace Notes.AI.VoiceRecognition.VoiceActivity
 
             // Flatten the jagged array and create the tensor with the correct shape
             var flatArray = x.SelectMany(inner => inner).ToArray();
+            var inputTensor = new DenseTensor<float>(flatArray, [batchSize, sampleSize]);
 
-            var input = new Dictionary<string, OrtValue>
+            // Convert sr to a tensor, if the model expects a scalar as a single-element tensor, ensure matching the expected dimensions
+            var srTensor = new DenseTensor<long>(new long[] { sr }, [1]);
+
+
+            var inputs = new List<NamedOnnxValue>
             {
-                {"input", OrtValue.CreateTensorValueFromMemory(flatArray, [batchSize, sampleSize]) },
-                {"sr", OrtValue.CreateTensorValueFromMemory(new Int64[] { sr }, [1]) },
-                {"h", h },
-                {"c", c },
-
+                NamedOnnxValue.CreateFromTensor("input", inputTensor),
+                NamedOnnxValue.CreateFromTensor("sr", srTensor),
+                NamedOnnxValue.CreateFromTensor("h", h),
+                NamedOnnxValue.CreateFromTensor("c", c)
             };
-
-            var runOptions = new RunOptions();
 
             try
             {
-                using (var results = session.Run(runOptions, input, session.OutputNames))
+                using (var results = session.Run(inputs))
                 {
-                    var output = results[0].GetTensorDataAsSpan<float>().ToArray();
-                    h = OrtValue.CreateTensorValueFromMemory(results.ElementAt(1).GetTensorDataAsSpan<float>().ToArray(), [2, 1, 64]);
-                    c = OrtValue.CreateTensorValueFromMemory(results.ElementAt(2).GetTensorDataAsSpan<float>().ToArray(), [2, 1, 64]);
+                    var output = results.First().AsEnumerable<float>().ToArray();
+                    h = results.ElementAt(1).AsTensor<float>();
+                    c = results.ElementAt(2).AsTensor<float>();
 
                     lastSr = sr;
                     lastBatchSize = batchSize;
-                    
 
                     return output;
                 }

@@ -31,11 +31,11 @@ namespace Notes
             return output.ToArray();
         }
 
-        public static byte[] ExtractAudioSegment(string inPath, double startTimeInSeconds, double segmentDurationInSeconds)
+        public static float[] ExtractAudioSegment(string inPath, double startTimeInSeconds, double segmentDurationInSeconds)
         {
             try
             {
-                var extension = System.IO.Path.GetExtension(inPath).Substring(1);
+                var extension = Path.GetExtension(inPath).Substring(1);
                 var output = new MemoryStream();
 
                 var convertSettings = new ConvertSettings
@@ -55,12 +55,27 @@ namespace Notes
                     outputFormat: "wav",
                     convertSettings);
 
-                return output.ToArray();
+                //return output.ToArray();
+                var buffer = output.ToArray();
+                int bytesPerSample = 2; // Assuming 16-bit depth (2 bytes per sample)
+
+                // Calculate total samples in the buffer
+                int totalSamples = buffer.Length / bytesPerSample;
+                float[] samples = new float[totalSamples];
+
+                for (int i = 0; i < totalSamples; i++)
+                {
+                    int bufferIndex = i * bytesPerSample;
+                    short sample = (short)(buffer[bufferIndex + 1] << 8 | buffer[bufferIndex]);
+                    samples[i] = sample / 32768.0f; // Normalize to range [-1,1] for floating point samples
+                }
+
+                return samples;
             }
             catch (Exception ex)
             {
                 Console.WriteLine("Error during the audio extraction: " + ex.Message);
-                return new byte[0]; // Return an empty array in case of exception
+                return []; // Return an empty array in case of exception
             }
         }
 

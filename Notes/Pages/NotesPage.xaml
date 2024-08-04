@@ -233,12 +233,10 @@
         </Style>
     </Page.Resources>
 
-    <Grid>
+    <Grid AllowDrop="True" DragOver="Grid_DragOver" Drop="Grid_Drop">
         <ScrollViewer VerticalScrollBarVisibility="Auto">
             <Grid
                 Background="{ThemeResource CardBackgroundFillColorDefaultBrush}"
-                BorderBrush="{ThemeResource CardStrokeColorDefaultBrush}"
-                BorderThickness="1"
                 CornerRadius="{StaticResource OverlayCornerRadius}"
                 Padding="0">
                 <Grid.RowDefinitions>

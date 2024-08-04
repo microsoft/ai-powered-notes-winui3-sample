@@ -298,6 +298,11 @@ namespace Notes.Pages
 
             e.Handled = true;
 
+            await HandleDataPackage(dataPackage);
+        }
+
+        private async Task HandleDataPackage(DataPackageView dataPackage)
+        {
             if (dataPackage.Contains(StandardDataFormats.Bitmap))
             {
                 var imageStreamReference = await dataPackage.GetBitmapAsync();
@@ -346,6 +351,16 @@ namespace Notes.Pages
         {
             AttachmentViewModel attachmentViewModel = (AttachmentViewModel)e.ClickedItem;
             ((Application.Current as App)?.Window as MainWindow).OpenAttachmentView(attachmentViewModel);
+        }
+
+        private void Grid_DragOver(object sender, DragEventArgs e)
+        {
+            e.AcceptedOperation = DataPackageOperation.Copy;
+        }
+
+        private async void Grid_Drop(object sender, DragEventArgs e)
+        {
+            await HandleDataPackage(e.DataView);
         }
     }
 }

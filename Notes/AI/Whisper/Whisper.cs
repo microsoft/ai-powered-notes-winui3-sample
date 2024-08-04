@@ -21,20 +21,21 @@ namespace Notes.AI.VoiceRecognition
             SessionOptions options = new SessionOptions();
             options.RegisterOrtExtensions();
             options.GraphOptimizationLevel = GraphOptimizationLevel.ORT_ENABLE_ALL;
+            options.EnableMemoryPattern = false;
 
             var session = new InferenceSession(modelPath, options);
 
             return session;
         }
 
-        private static async Task<List<WhisperTranscribedChunk>> TranscribeChunkAsync(byte[] pcmAudioData, string inputLanguage, WhisperTaskType taskType, int offsetSeconds = 30)
+        private static async Task<List<WhisperTranscribedChunk>> TranscribeChunkAsync(float[] pcmAudioData, string inputLanguage, WhisperTaskType taskType, int offsetSeconds = 30)
         {
             if (_inferenceSession == null)
             {
                 _inferenceSession = InitializeModel();
             }
 
-            var audioTensor = new DenseTensor<byte>(pcmAudioData, [1, pcmAudioData.Length]);
+            var audioTensor = new DenseTensor<float>(pcmAudioData, [1, pcmAudioData.Length]);
             var timestampsEnableTensor = new DenseTensor<int>(new[] { 1 }, [1]);
 
             int task = (int)taskType;
@@ -43,7 +44,7 @@ namespace Notes.AI.VoiceRecognition
             var langAndModeTensor = new DenseTensor<int>(decoderInputIds, [1, 3]);
 
             var inputs = new List<NamedOnnxValue> {
-                NamedOnnxValue.CreateFromTensor("audio_stream", audioTensor),
+                NamedOnnxValue.CreateFromTensor("audio_pcm", audioTensor),
                 NamedOnnxValue.CreateFromTensor("min_length", new DenseTensor<int>(new int[] { 0 }, [1])),
                 NamedOnnxValue.CreateFromTensor("max_length", new DenseTensor<int>(new int[] { 448 }, [1])),
                 NamedOnnxValue.CreateFromTensor("num_beams", new DenseTensor<int>(new int[] {1}, [1])),

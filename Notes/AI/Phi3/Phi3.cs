@@ -14,7 +14,7 @@ namespace Notes.AI.Phi
     public partial class Phi3 : IDisposable
     {
         // model from https://huggingface.co/microsoft/Phi-3-mini-4k-instruct-onnx
-        private readonly string ModelDir = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "onnx-models", "phi-3-directml-int4-awq-block-128");
+        private readonly string ModelDir = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "onnx-models", "phi3");
 
         private Model? model = null;
         public event EventHandler? ModelLoaded = null;
