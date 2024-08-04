@@ -34,12 +34,18 @@ namespace Notes.AI.Phi
             return Task.Run(async () =>
             {
 
-                var system = "you are a helper that reads text and responds in json array format with any todo items in that text. If no todo items, respond with <no-todo>";
+                var system = "Summarize the user text to 2-3 to-do items. Use the format [\"to-do 1\", \"to-do 2\"]. Respond only in one json array format";
                 string response = string.Empty;
 
-                await foreach (var partialResult in InferStreaming(system, text))
+                CancellationTokenSource cts = new CancellationTokenSource();
+                await foreach (var partialResult in InferStreaming(system, text, cts.Token))
                 {
                     response += partialResult;
+                    if (partialResult.Contains("]"))
+                    {
+                        cts.Cancel();
+                        break;
+                    }
                 }
 
                 var todos = Regex.Matches(response, @"""([^""]*)""", RegexOptions.IgnoreCase | RegexOptions.Multiline)

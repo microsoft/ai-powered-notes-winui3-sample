@@ -26,7 +26,7 @@ namespace Notes.ViewModels
         private ObservableCollection<string> todos = new();
 
         [ObservableProperty]
-        private bool todosLoading = true;
+        private bool todosLoading = false;
 
         private DispatcherTimer _saveTimer;
         private bool _contentLoaded = false;
@@ -178,7 +178,7 @@ namespace Notes.ViewModels
 
         public async Task ShowTodos()
         {
-            if (!TodosLoading || Todos == null || Todos.Count == 0)
+            if (!TodosLoading && (Todos == null || Todos.Count == 0))
             {
                 DispatcherQueue.TryEnqueue(() => TodosLoading = true);
                 var todos = await Phi3.Instance.GetTodoItemsFromText(Content);

@@ -15,12 +15,17 @@
               MaxWidth="1200"
               Background="#efefef"
               CornerRadius="8">
-            <Viewbox Stretch="Uniform" StretchDirection="Both" Margin="25">
-                <Grid>
-                    <Image x:Name="AttachmentImage" />
-                    <Canvas x:Name="AttachmentImageTextCanvas" />
-                </Grid>
-            </Viewbox>
+            <ScrollViewer x:Name="rootScrollViewer"
+                ZoomMode="Enabled" MaxZoomFactor="1" MinZoomFactor="0.5"
+                HorizontalScrollMode="Auto" HorizontalScrollBarVisibility="Auto"
+                VerticalScrollMode="Auto" VerticalScrollBarVisibility="Auto">
+                <Viewbox Stretch="Uniform" StretchDirection="Both">
+                    <Grid Padding="24">
+                        <Image x:Name="AttachmentImage" />
+                        <Canvas x:Name="AttachmentImageTextCanvas" />
+                    </Grid>
+                </Viewbox>
+            </ScrollViewer>
             
         </Grid>
         <Grid x:Name="MediaGrid"

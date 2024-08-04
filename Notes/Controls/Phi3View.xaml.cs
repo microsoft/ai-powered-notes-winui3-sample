@@ -32,6 +32,7 @@ namespace Notes.Controls
             aIResponseText.Text = "...";
             userQuestionRoot.Visibility = Visibility.Visible;
             aIAnswerRoot.Visibility = Visibility.Visible;
+            sourcesText.Visibility = Visibility.Collapsed;
             Sources.Clear();
 
             this.Visibility = Visibility.Visible;

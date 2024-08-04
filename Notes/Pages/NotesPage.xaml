@@ -356,7 +356,7 @@
                         Foreground="#BBBBBB" />
                 </Border>
 
-                <Button Content="To-Dos" VerticalAlignment="Top" Click="TodosClicked" HorizontalAlignment="Right" Margin="48">
+                <Button Content="To-Dos" VerticalAlignment="Top" Click="TodosClicked" HorizontalAlignment="Right" Margin="48, 58, 28, 0">
                     <Button.Flyout>
                         <Flyout LightDismissOverlayMode="Auto" >
                             <Grid>

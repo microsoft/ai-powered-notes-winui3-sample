@@ -3,8 +3,6 @@ using System.Diagnostics;
 using System.Threading.Tasks;
 using System;
 using System.Linq;
-using Notes.ViewModels;
-using System.Text.RegularExpressions;
 using System.Numerics.Tensors;
 
 namespace Notes.AI.Embeddings
