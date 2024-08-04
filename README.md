@@ -29,13 +29,13 @@ Phi-3-mini-4k-instruct-onnx has 3 different versions inside it's repo. We are us
 The model can be downloaded from the following link:
 - https://huggingface.co/optimum/all-MiniLM-L6-v2
 
-This is model we use for semantic search. The two files you will need are `model.onnx` and `vocab.txt`. Create a new folder under `onnx-models` called `embedding` and place the files there. Rename `model.onnx` to `all-MiniLM-L6-v2.onnx`.
+This is model we use for semantic search. The two files you will need are `model.onnx` and `vocab.txt`. Create a new folder under `onnx-models` called `embedding` and place the files there. 
 
 ## Downloading Sliero VAD
 The Sliero Voice Activity Detection model can be downloaded from the following link:
-- https://github.com/snakers4/silero-vad 
+- [https://github.com/snakers4/silero-vad ](https://github.com/snakers4/silero-vad/tree/a9d2b591dea11451d23aa4b480eff8e55dbd9d99/files)
 
-This is the model we use for smart chunking of audio and the only file you will need is the `/src/silero_vad/data/sliero_vad.onnx` file. 
+This is the model we use for smart chunking of audio and the only file you will need is the `sliero_vad.onnx` file. 
 
 This should also be placed under a new folder called `whisper` under the `onnx-models` folder.
 
