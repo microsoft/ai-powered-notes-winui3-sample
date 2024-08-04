@@ -49,7 +49,7 @@ namespace Notes.AI.Embeddings
             try
             {
 
-                _inferenceSession = new InferenceSession($@"{modelRoot}\all-MiniLM-L6-v2.onnx", sessionOptions);
+                _inferenceSession = new InferenceSession($@"{modelRoot}\model.onnx", sessionOptions);
 
                 ModelLoaded?.Invoke(this, EventArgs.Empty);
             }
