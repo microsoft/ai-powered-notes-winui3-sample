@@ -35,7 +35,7 @@ This is model we use for semantic search. The two files you will need are `model
 The Sliero Voice Activity Detection model can be downloaded from the following link:
 - https://github.com/snakers4/silero-vad 
 
-This is the model we use for smart chunking of audio and the only file you will need is the `/files/sliero_vad.onnx` file. 
+This is the model we use for smart chunking of audio and the only file you will need is the `/src/silero_vad/data/sliero_vad.onnx` file. 
 
 This should also be placed under a new folder called `whisper` under the `onnx-models` folder.
 
