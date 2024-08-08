@@ -58,7 +58,7 @@ namespace Notes.AI.VoiceRecognition
             try
             {
                 using var results = _inferenceSession.Run(inputs);
-                var result = results[0].AsTensor<string>().GetValue(0);
+                string result = results[0].AsTensor<string>().GetValue(0);
                 return WhisperUtils.ProcessTranscriptionWithTimestamps(result, offsetSeconds);
             }
             catch (Exception ex)
