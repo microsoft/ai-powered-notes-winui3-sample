@@ -1,11 +1,10 @@
-﻿//using Microsoft.Windows.Imaging;
-//using Microsoft.Windows.Vision;
-using System;
+﻿using System;
 using System.Linq;
 using System.Text.Json;
 using System.Threading.Tasks;
 using Windows.Graphics.Imaging;
 using Windows.Storage;
+using Microsoft.Windows.AI.Imaging;
 
 namespace Notes.AI.TextRecognition
 {
@@ -13,19 +12,16 @@ namespace Notes.AI.TextRecognition
     {
         public static async Task<string[]> GetTextFromImage(SoftwareBitmap image)
         {
-            // commented out until APIs are available
-            //    await TextRecognizer.MakeAvailableAsync();
-            //    var textRecognizer = await TextRecognizer.CreateAsync();
+            await TextRecognizer.MakeAvailableAsync();
+            var textRecognizer = await TextRecognizer.CreateAsync();
 
-            //    var options = new TextRecognizerOptions();
+            var options = new TextRecognizerOptions();
 
-            //    // create ImageBuffer from image
-            //    var imageBuffer = ImageBuffer.CreateBufferAttachedToBitmap(image);
+            // create ImageBuffer from image
+            var imageBuffer = ImageBuffer.CreateBufferAttachedToBitmap(image);
 
-            //    var recognizedText = await textRecognizer.RecognizeTextFromImageAsync(imageBuffer, options);
-            //    return recognizedText.Lines.Select(n => n.Text).ToArray();
-
-            return new string[] { "Not implemented" };
+            var recognizedText = await textRecognizer.RecognizeTextFromImageAsync(imageBuffer, options);
+            return recognizedText.Lines.Select(n => n.Text).ToArray();
         }
 
         public static async Task<RecognizedText> GetSavedText(string filename)
