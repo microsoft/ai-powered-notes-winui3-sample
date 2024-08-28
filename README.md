@@ -50,34 +50,41 @@ git clone https://github.com/microsoft/Olive
 cd Olive/examples/whisper
 ```
 
-2. Install the required packages:
+2. Install Olive from source and use a [virtual environment](https://github.com/microsoft/Olive/blob/main/examples/README.md#virtual-env) or [conda](https://github.com/microsoft/Olive/blob/main/examples/README.md#conda-env):
 ```
-pip install olive-ai
+pip install git+https://github.com/microsoft/Olive
+```
+
+3. Install the required packages:
+```
 python -m pip install -r requirements.txt
 pip install onnxruntime
 pip install onnxruntime_extensions
 ```
 
-3. Prepare the Whisper model
+4. Prepare the Whisper model
 ```
 python prepare_whisper_configs.py --model_name openai/whisper-small --multilingual --enable_timestamps 
 ```
 
-4. Run the Olive workflow to generate the optimized model
+5. Run the Olive workflow to generate the optimized model
 ```
 olive run --config whisper_cpu_int8.json --setup
 olive run --config whisper_cpu_int8.json
 ```
 
-5. The generated model will be in the \models\conversion-transformers_optimization-onnx_dynamic_quantization-insert_beam_search-prepost folder. 
+6. The generated model will be in the \models\conversion-transformers_optimization-onnx_dynamic_quantization-insert_beam_search-prepost folder. 
 
-6. Rename the model from `whisper_cpu_int8_cpu-cpu_model.onnx` to `whisper_small.onnx` and place it in the `onnx-models/whisper` folder.
+7. Rename the model from `whisper_cpu_int8_cpu-cpu_model.onnx` to `whisper_small.onnx` and place it in the `onnx-models/whisper` folder.
 
 ## Troubleshooting
 
 ### Path name too long
 You might run into an issue if you clone the repo in a location that will make the path too long to some of the generated binaries. Recomendation is to place the repo closer to the root of the drive and rename the repo folder name to something shorter. Alternatively, you can change the settings in Windows to support long paths
 https://learn.microsoft.com/en-us/windows/win32/fileio/maximum-file-path-limitation?tabs=registry#enable-long-paths-in-windows-10-version-1607-and-later .
+
+### Olive version and config mismatch
+You might run into an issue where the config file and olive version is not compatible. Because Olive is in rapid development, you will need to ensure the version of the config file matches the olive version you want to use. To ensure the latest versions of the examples can be run without issues, you have to install Olive from source. Alternatively, for downstream dependencies, we suggest pinning the Olive version that worked for you.
 
 ## Contributing
 
