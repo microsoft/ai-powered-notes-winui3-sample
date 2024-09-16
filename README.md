@@ -75,9 +75,12 @@ olive run --config whisper_cpu_int8.json
 
 6. The generated model will be in the \models\conversion-transformers_optimization-onnx_dynamic_quantization-insert_beam_search-prepost folder. 
 
-7. Rename the model from `whisper_cpu_int8_cpu-cpu_model.onnx` to `whisper_small.onnx` and place it in the `onnx-models/whisper` folder.
+7. Rename the model from `whisper_cpu_int8_cpu-cpu_model.onnx` to `whisper_small.onnx` and place it in the `onnx-models/whisper` folder. 
 
 ## Troubleshooting
+
+### TextRecognition APIs are not available
+The TextRecognition APIs are not yet available in the public release of the WindowsAppSDK and their usage is commented out in this sample. We will update the app to use those APIs once they are available publicly.  
 
 ### Path name too long
 You might run into an issue if you clone the repo in a location that will make the path too long to some of the generated binaries. Recomendation is to place the repo closer to the root of the drive and rename the repo folder name to something shorter. Alternatively, you can change the settings in Windows to support long paths
