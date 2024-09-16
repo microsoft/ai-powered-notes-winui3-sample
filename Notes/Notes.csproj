@@ -41,9 +41,9 @@
     <PackageReference Include="CommunityToolkit.WinUI.UI.Animations" Version="7.1.2" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.Sqlite" Version="9.0.0-preview.3.24172.4" />
     <PackageReference Include="Microsoft.Graphics.Win2D" Version="1.2.0" />
-    <PackageReference Include="Microsoft.ML.OnnxRuntime.Extensions" Version="0.10.0" />
-    <PackageReference Include="Microsoft.ML.OnnxRuntime.Managed" Version="1.18.0" />
-    <PackageReference Include="Microsoft.ML.OnnxRuntimeGenAI.DirectML" Version="0.2.0" />
+    <PackageReference Include="Microsoft.ML.OnnxRuntime.Extensions" Version="0.12.0" />
+    <PackageReference Include="Microsoft.ML.OnnxRuntime.Managed" Version="1.19.2" />
+    <PackageReference Include="Microsoft.ML.OnnxRuntimeGenAI.DirectML" Version="0.4.0" />
     <PackageReference Include="Microsoft.WindowsAppSDK" Version="1.5.240428000" />
     <PackageReference Include="Microsoft.Windows.SDK.BuildTools" Version="10.0.26031-preview" />
     <PackageReference Include="NAudio" Version="2.2.1" />
