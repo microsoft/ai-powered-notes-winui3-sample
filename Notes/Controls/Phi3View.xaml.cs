@@ -7,7 +7,7 @@ using System.Collections.ObjectModel;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
-using Notes.AI.Phi;
+using Notes.AI;
 
 // To learn more about WinUI, the WinUI project structure,
 // and more about our project templates, see: http://aka.ms/winui-project-info.
@@ -26,6 +26,11 @@ namespace Notes.Controls
 
         public async Task ShowAndSummarize(string text)
         {
+            if (App.ChatClient == null)
+            {
+                return;
+            }
+
             _cts = new CancellationTokenSource();
             var token = _cts.Token;
             userPromptText.Text = $"Summarize \n \"{text.Substring(0, Math.Min(1000, text.Length))}...\"";
@@ -41,7 +46,7 @@ namespace Notes.Controls
             {
                 var firstPartial = true;
                 
-                await foreach (var partialResult in Phi3.Instance.SummarizeTextAsync(text, token))
+                await foreach (var partialResult in App.ChatClient.SummarizeTextAsync(text, token))
                 {
                     if (token.IsCancellationRequested)
                     {
@@ -76,6 +81,11 @@ namespace Notes.Controls
 
         internal async Task FixAndCleanUp(string text)
         {
+            if (App.ChatClient == null)
+            {
+                return;
+            }
+
             _cts = new CancellationTokenSource();
             var token = _cts.Token;
             userPromptText.Text = $"Fix this text \n \"{text.Substring(0, Math.Min(1000, text.Length))}...\"";
@@ -90,7 +100,7 @@ namespace Notes.Controls
             {
                 var firstPartial = true;
 
-                await foreach (var partialResult in Phi3.Instance.FixAndCleanUpTextAsync(text, token))
+                await foreach (var partialResult in App.ChatClient.FixAndCleanUpTextAsync(text, token))
                 {
                     if (token.IsCancellationRequested)
                     {
@@ -155,6 +165,11 @@ namespace Notes.Controls
 
         private async Task HandleRagQuestion(string question)
         {
+            if (App.ChatClient == null)
+            {
+                return;
+            }
+
             _cts = new CancellationTokenSource();
             var token = _cts.Token;
             textBox.Text = string.Empty;
@@ -179,7 +194,7 @@ namespace Notes.Controls
                 var information = string.Join(" ", foundSources.Select(chunk => chunk.Content).ToList());
                 var response = string.Empty;
 
-                await foreach (var partialResult in Phi3.Instance.AskForContentAsync(information, question, _cts.Token))
+                await foreach (var partialResult in App.ChatClient.AskForContentAsync(information, question, _cts.Token))
                 {
                     if (token.IsCancellationRequested)
                     {

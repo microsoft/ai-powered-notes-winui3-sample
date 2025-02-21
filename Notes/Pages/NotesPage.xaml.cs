@@ -9,11 +9,11 @@ using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using Notes.Models;
-using Notes.AI.Phi;
 using Notes.ViewModels;
 using Windows.ApplicationModel.DataTransfer;
 using Windows.Graphics.Imaging;
 using Windows.Storage;
+using Notes.AI;
 
 // The Blank Page item template is documented at https://go.microsoft.com/fwlink/?LinkId=234238
 
@@ -220,6 +220,11 @@ namespace Notes.Pages
 
         private Task<string?> AutoComplete(string input)
         {
+            if (App.ChatClient == null)
+            {
+                return null;
+            }
+
             var id = count++;
             var cts = new CancellationTokenSource();
             _autosuggestCts = cts;
@@ -227,7 +232,7 @@ namespace Notes.Pages
             {
                 string suggestion = string.Empty;
                 Debug.WriteLine($"[{id}]Autosuggestion for {input}: ");
-                await foreach (var partial in Phi3.Instance.AutocompleteSentenceAsync(input, cts.Token))
+                await foreach (var partial in App.ChatClient.AutocompleteSentenceAsync(input, cts.Token))
                 {
                     if (partial.Contains(".") || partial.Contains("!") || partial.Contains("?") || partial.Contains("\r"))
                     {

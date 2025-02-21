@@ -8,10 +8,10 @@ using System.Linq;
 using System.Threading.Tasks;
 using Notes.AI.Embeddings;
 using Notes.Models;
-using Notes.AI.Phi;
 using Windows.Graphics.Imaging;
 using Windows.Storage;
 using System.Collections.Generic;
+using Notes.AI;
 
 namespace Notes.ViewModels
 {
@@ -178,10 +178,15 @@ namespace Notes.ViewModels
 
         public async Task ShowTodos()
         {
+            if (App.ChatClient == null)
+            {
+                return;
+            }
+
             if (!TodosLoading && (Todos == null || Todos.Count == 0))
             {
                 DispatcherQueue.TryEnqueue(() => TodosLoading = true);
-                var todos = await Phi3.Instance.GetTodoItemsFromText(Content);
+                var todos = await App.ChatClient.GetTodoItemsFromText(Content);
                 if (todos != null && todos.Count > 0)
                 {
                     DispatcherQueue.TryEnqueue(() => Todos = new ObservableCollection<string>(todos));

@@ -1,5 +1,9 @@
-﻿using Microsoft.UI.Xaml;
-using Notes.AI.Phi;
+﻿using Microsoft.Extensions.AI;
+using Microsoft.UI.Xaml;
+using Notes.AI;
+using System;
+using System.IO;
+using System.Threading.Tasks;
 
 // To learn more about WinUI, the WinUI project structure,
 // and more about our project templates, see: http://aka.ms/winui-project-info.
@@ -11,7 +15,7 @@ namespace Notes
     /// </summary>
     public partial class App : Application
     {
-
+        public static IChatClient? ChatClient { get; private set; }
         /// <summary>
         /// Initializes the singleton application object.  This is the first line of authored code
         /// executed, and as such is the logical equivalent of main() or WinMain().
@@ -30,7 +34,20 @@ namespace Notes
             m_window = new MainWindow();
             m_window.Activate();
 
-            Phi3.Instance.InitializeAsync();
+            _ = InitializeIChatClient();
+        }
+
+        private async Task InitializeIChatClient()
+        {
+            ChatClient = await GenAIModel.CreateAsync(
+                Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "onnx-models", "phi"), 
+                new LlmPromptTemplate
+                {
+                    System = "<|system|>\n{{CONTENT}}<|end|>\n",
+                    User = "<|user|>\n{{CONTENT}}<|end|>\n",
+                    Assistant = "<|assistant|>\n{{CONTENT}}<|end|>\n",
+                    Stop = ["<|system|>", "<|user|>", "<|assistant|>", "<|end|>"]
+                });
         }
 
         private Window m_window;
