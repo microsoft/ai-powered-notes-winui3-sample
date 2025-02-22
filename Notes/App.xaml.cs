@@ -39,6 +39,10 @@ namespace Notes
 
         private async Task InitializeIChatClient()
         {
+            // use PhiSilica
+            // ChatClient = await PhiSilicaClient.CreateAsync();
+
+            // use genai model
             ChatClient = await GenAIModel.CreateAsync(
                 Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "onnx-models", "genai-model"), 
                 new LlmPromptTemplate
