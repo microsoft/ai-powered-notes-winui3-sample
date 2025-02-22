@@ -19,8 +19,8 @@ namespace Notes.AI.Embeddings
         [GeneratedRegex(@"[\u0000-\u001F\u007F-\uFFFF]")]
         private static partial Regex MyRegex();
 
-        // model from https://huggingface.co/optimum/all-MiniLM-L6-v2
-        private readonly string modelRoot = $@"{AppDomain.CurrentDomain.BaseDirectory}onnx-models\embedding";
+        // model from https://huggingface.co/sentence-transformers/all-MiniLM-L6-v2
+        private readonly string modelRoot = $@"{AppDomain.CurrentDomain.BaseDirectory}onnx-models\embeddings";
         private InferenceSession? _inferenceSession;
         private MyTokenizer? tokenizer = null;
 
@@ -49,7 +49,7 @@ namespace Notes.AI.Embeddings
             try
             {
 
-                _inferenceSession = new InferenceSession($@"{modelRoot}\model.onnx", sessionOptions);
+                _inferenceSession = new InferenceSession($@"{modelRoot}\onnx\model.onnx", sessionOptions);
 
                 ModelLoaded?.Invoke(this, EventArgs.Empty);
             }

@@ -76,8 +76,6 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Assets\Icon\" />
-    <Folder Include="Models\phi\" />
-    <Folder Include="onnx-models\" />
   </ItemGroup>
   <ItemGroup>
     <Page Update="Controls\AttachmentView.xaml">

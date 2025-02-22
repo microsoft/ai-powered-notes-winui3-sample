@@ -220,16 +220,16 @@ namespace Notes.Pages
 
         private Task<string?> AutoComplete(string input)
         {
-            if (App.ChatClient == null)
-            {
-                return null;
-            }
-
             var id = count++;
             var cts = new CancellationTokenSource();
             _autosuggestCts = cts;
             return Task.Run(async () =>
             {
+                if (App.ChatClient == null)
+                {
+                    return string.Empty;
+                }
+
                 string suggestion = string.Empty;
                 Debug.WriteLine($"[{id}]Autosuggestion for {input}: ");
                 await foreach (var partial in App.ChatClient.AutocompleteSentenceAsync(input, cts.Token))

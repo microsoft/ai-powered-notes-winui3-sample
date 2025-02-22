@@ -14,9 +14,7 @@ namespace Notes.AI.VoiceRecognition
         private static InferenceSession? _inferenceSession;
         private static InferenceSession InitializeModel()
         {
-            // model generated from https://github.com/microsoft/Olive/blob/main/examples/whisper/README.md
-            // var modelPath = $@"{AppDomain.CurrentDomain.BaseDirectory}onnx-models\whisper\whisper_tiny.onnx";
-            var modelPath = $@"{AppDomain.CurrentDomain.BaseDirectory}onnx-models\whisper\whisper_small.onnx";
+            var modelPath = $@"{AppDomain.CurrentDomain.BaseDirectory}onnx-models\whisper\whisper_tiny.onnx";
 
             SessionOptions options = new SessionOptions();
             options.RegisterOrtExtensions();

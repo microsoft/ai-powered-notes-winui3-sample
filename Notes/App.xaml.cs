@@ -40,7 +40,7 @@ namespace Notes
         private async Task InitializeIChatClient()
         {
             ChatClient = await GenAIModel.CreateAsync(
-                Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "onnx-models", "phi"), 
+                Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "onnx-models", "genai-model"), 
                 new LlmPromptTemplate
                 {
                     System = "<|system|>\n{{CONTENT}}<|end|>\n",
