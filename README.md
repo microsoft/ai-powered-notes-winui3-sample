@@ -14,20 +14,34 @@ Clone the repository and open the solution in Visual Studio. Before you can get 
 
 The final folder structure should look like this:
 
-![Folder Structure](folder_structure.png)
+![image](https://github.com/user-attachments/assets/05436579-9bf9-4dc0-a30d-24b1c4006d19)
 
-## Downloading Phi3
+
+> [!NOTE]  
+> Many of these models can be downloaded quickly using the [AI Dev Gallery](https://github.com/microsoft/ai-dev-gallery).
+
+<p align="center">
+<img src="https://github.com/microsoft/ai-dev-gallery/blob/main/docs/images/HeroImage1.png" alt="AI Dev Gallery" width="600"/>
+</p>
+<p align="center">
+<a href="http://aka.ms/ai-dev-gallery-store">
+	<img alt="Store badge" src="https://github.com/microsoft/ai-dev-gallery/blob/main/docs/images/storeBadge.png" width="200"/>
+</a>
+</p>
+
+## Downloading Phi3.5 (or other GenAI model)
 
 The model can be downloaded from the following link:
-- https://huggingface.co/microsoft/Phi-3-mini-4k-instruct-onnx
+- [https://huggingface.co/microsoft/Phi-3.5-mini-instruct-onnx](https://huggingface.co/microsoft/Phi-3.5-mini-instruct-onnx)
 
-Huggingface models are in repositories which you can clone to get the model files. Clone the Phi3 model repository and copy the required files to this project.
+Use the AI Dev Gallery linked above to download the model files. Alternatively, Huggingface models are in repositories which you can clone to get the model files. Clone the  model repository and copy the required files to this project.
 
-Phi-3-mini-4k-instruct-onnx has 3 different versions inside it's repo. We are using the DirectML versions in this project. Copy the contents of the `directml/directml-int4-awq-block-128` folder to a new folder called `phi-3-directml-int4-awq-block-128` under `onnx-models` folder.
+> [!NOTE]  
+> You can use any GenAI model by downloading the right model files and droping them in the `genai-model` folder. If using a model other than phi, make sure to also update the prompt template in the `App.xaml.cs`
 
 ## Downloading all-MiniLM-L6-v2 
 The model can be downloaded from the following link:
-- https://huggingface.co/optimum/all-MiniLM-L6-v2
+- [https://huggingface.co/sentence-transformers/all-MiniLM-L6-v2](https://huggingface.co/sentence-transformers/all-MiniLM-L6-v2)
 
 This is model we use for semantic search. The two files you will need are `model.onnx` and `vocab.txt`. Create a new folder under `onnx-models` called `embedding` and place the files there. 
 
@@ -37,45 +51,16 @@ The Sliero Voice Activity Detection model can be downloaded from the following l
 
 This is the model we use for smart chunking of audio and the only file you will need is the `sliero_vad.onnx` file. 
 
-This should also be placed under a new folder called `whisper` under the `onnx-models` folder.
+This should also be placed under a new folder called `whisper` under the `onnx-models` folder. 
+
 
 ## Downloading Whisper
-The process for getting the Whisper model is a bit more involved, as it needs to be manually generated with [Olive](https://github.com/microsoft/OLive).
+The Whisper model can be downloaded from the following link:
+- [https://huggingface.co/khmyznikov/whisper-int8-cpu-ort.onnx](https://huggingface.co/khmyznikov/whisper-int8-cpu-ort.onnx)
 
-This can all be done from the command line and only requires Python as a dependency, to get your model, follow these steps:
+Download any of the versions on the repo or from the AI Dev Gallery and place them in the `onnx-models\whisper` folder. Make sure the path in `AI\Whisper\Whisper.cs` in the `InitializeModel` method reflects the same name:
+<img width="648" alt="image" src="https://github.com/user-attachments/assets/a152f01b-f7ba-45e7-9798-989d3d973afb" />
 
-1. Clone the Olive repository and navigate to the Whisper example folder:
-```
-git clone https://github.com/microsoft/Olive
-cd Olive/examples/whisper
-```
-
-2. Install Olive from source and use a [virtual environment](https://github.com/microsoft/Olive/blob/main/examples/README.md#virtual-env) or [conda](https://github.com/microsoft/Olive/blob/main/examples/README.md#conda-env):
-```
-pip install git+https://github.com/microsoft/Olive
-```
-
-3. Install the required packages:
-```
-python -m pip install -r requirements.txt
-pip install onnxruntime
-pip install onnxruntime_extensions
-```
-
-4. Prepare the Whisper model
-```
-python prepare_whisper_configs.py --model_name openai/whisper-small --multilingual --enable_timestamps 
-```
-
-5. Run the Olive workflow to generate the optimized model
-```
-olive run --config whisper_cpu_int8.json --setup
-olive run --config whisper_cpu_int8.json
-```
-
-6. The generated model will be in the \models\conversion-transformers_optimization-onnx_dynamic_quantization-insert_beam_search-prepost folder. 
-
-7. Rename the model from `whisper_cpu_int8_cpu-cpu_model.onnx` to `whisper_small.onnx` and place it in the `onnx-models/whisper` folder. 
 
 ## Troubleshooting
 
@@ -85,9 +70,6 @@ The TextRecognition APIs are not yet available in the public release of the Wind
 ### Path name too long
 You might run into an issue if you clone the repo in a location that will make the path too long to some of the generated binaries. Recomendation is to place the repo closer to the root of the drive and rename the repo folder name to something shorter. Alternatively, you can change the settings in Windows to support long paths
 https://learn.microsoft.com/en-us/windows/win32/fileio/maximum-file-path-limitation?tabs=registry#enable-long-paths-in-windows-10-version-1607-and-later .
-
-### Olive version and config mismatch
-You might run into an issue where the config file and olive version is not compatible. Because Olive is in rapid development, you will need to ensure the version of the config file matches the olive version you want to use. To ensure the latest versions of the examples can be run without issues, you have to install Olive from source. Alternatively, for downstream dependencies, we suggest pinning the Olive version that worked for you.
 
 ## Contributing
 
