@@ -29,6 +29,9 @@ The final folder structure should look like this:
 </a>
 </p>
 
+## Phi Silica
+Phi Silica is disabled by deault, but you can enable it in `App.xaml.cs` in the `InitializeIChatClient` method. To use Phi Silica for the generative tasks, see requirements here: https://learn.microsoft.com/en-us/windows/ai/apis/phi-silica
+
 ## Downloading Phi3.5 (or other GenAI model)
 
 The model can be downloaded from the following link:
@@ -63,9 +66,6 @@ Download any of the versions on the repo or from the AI Dev Gallery and place th
 
 
 ## Troubleshooting
-
-### TextRecognition APIs are not available
-The TextRecognition APIs are not yet available in the public release of the WindowsAppSDK and their usage is commented out in this sample. We will update the app to use those APIs once they are available publicly.  
 
 ### Path name too long
 You might run into an issue if you clone the repo in a location that will make the path too long to some of the generated binaries. Recomendation is to place the repo closer to the root of the drive and rename the repo folder name to something shorter. Alternatively, you can change the settings in Windows to support long paths
