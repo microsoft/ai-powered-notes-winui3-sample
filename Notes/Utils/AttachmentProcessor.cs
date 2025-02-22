@@ -11,6 +11,7 @@ using Windows.Storage;
 using Windows.Storage.Streams;
 using Windows.Graphics.Imaging;
 using Notes.AI.TextRecognition;
+using System.Text.Json;
 
 namespace Notes
 {
@@ -74,11 +75,20 @@ namespace Notes
                 BitmapDecoder decoder = await BitmapDecoder.CreateAsync(stream);
                 SoftwareBitmap softwareBitmap = await decoder.GetSoftwareBitmapAsync();
 
-                var text = await TextRecognition.GetTextFromImage(softwareBitmap);
-                var joinedText = string.Join("\n", text);
+                var recognizedText = await TextRecognition.GetTextFromImage(softwareBitmap);
+                if (recognizedText == null)
+                {
+                    attachment.IsProcessed = true;
+                    InvokeAttachmentProcessedComplete(attachment);
+                    return;
+                }
 
-                var filename = await SaveTextToFileAsync(joinedText, file.DisplayName + ".txt");
+                var joinedText = string.Join("\n", recognizedText.Lines.Select(l => l.Text));
+                var serializedText = JsonSerializer.Serialize(recognizedText);
+
+                var filename = await SaveTextToFileAsync(serializedText, file.DisplayName + ".txt");
                 attachment.FilenameForText = filename;
+
                 await SemanticIndex.Instance.AddOrReplaceContent(joinedText, attachment.Id, "attachment", (o, p) =>
                 {
                     if (progress != null)
@@ -87,6 +97,7 @@ namespace Notes
                     }
                 });
                 attachment.IsProcessed = true;
+                InvokeAttachmentProcessedComplete(attachment);
 
                 var context = await AppDataContext.GetCurrentAsync();
                 context.Update(attachment);
@@ -134,15 +145,7 @@ namespace Notes
                     }
                 });
                 attachment.IsProcessed = true;
-                if (AttachmentProcessed != null)
-                {
-                    AttachmentProcessed.Invoke(null, new AttachmentProcessedEventArgs
-                    {
-                        AttachmentId = attachment.Id,
-                        Progress = 1,
-                        ProcessingStep = "Complete"
-                    });
-                }
+                InvokeAttachmentProcessedComplete(attachment);
 
                 var context = await AppDataContext.GetCurrentAsync();
                 context.Update(attachment);
@@ -159,6 +162,18 @@ namespace Notes
             return file.Name;
         }
 
+        private static void InvokeAttachmentProcessedComplete(Attachment attachment)
+        {
+            if (AttachmentProcessed != null)
+            {
+                AttachmentProcessed.Invoke(null, new AttachmentProcessedEventArgs
+                {
+                    AttachmentId = attachment.Id,
+                    Progress = 1,
+                    ProcessingStep = "Complete"
+                });
+            }
+        }
 
     }
 

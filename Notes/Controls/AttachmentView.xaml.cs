@@ -110,6 +110,8 @@ namespace Notes.Controls
             var text = await TextRecognition.GetSavedText(fileName.Split('.')[0] + ".txt");
             foreach (var line in text.Lines)
             {
+                var height = line.Height;
+                var width = line.Width;
                 AttachmentImageTextCanvas.Children.Add(
                     new Border()
                     {
@@ -126,11 +128,11 @@ namespace Notes.Controls
                             StretchDirection = StretchDirection.Both,
                             VerticalAlignment = VerticalAlignment.Center,
                             Margin = new Thickness(4),
-                            Height = line.Height,
-                            Width = line.Width,
+                            Height = height,
+                            Width = width,
                         },
-                        Height = line.Height + 8,
-                        Width = line.Width + 8,
+                        Height = height + 8,
+                        Width = width + 8,
                         CornerRadius = new CornerRadius(8),
                         Margin = new Thickness(line.X - 4, line.Y - 4, 0, 0),
                         RenderTransform = new RotateTransform() { Angle = text.ImageAngle },
